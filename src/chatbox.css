@@ -1,0 +1,36 @@
+.ChatBox-Container {
+    border: 1px solid black;
+    background: grey;
+    display: block;
+}
+
+.Message {
+width: 100%;
+float: left;
+}
+
+.Sender {
+    float: left;
+    background: silver;
+    width: 10%;
+}
+
+.MessageText {
+    float: left;
+    background: white;
+    width: 30%;
+}
+
+.MessageInput{
+    float: left;
+    width: 100%;
+    background: lightblue;
+}
+
+.MessageInput > h3 {
+    float: left;
+}
+.Message-Sent {
+    float: left;
+    height: 100%;
+}
