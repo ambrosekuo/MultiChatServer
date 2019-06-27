@@ -1,5 +1,5 @@
 import React from "react";
-import "./chatbox.css";
+import "./Chatbox.css";
 import io from "socket.io-client";
 
 function Message(props) {
@@ -11,6 +11,24 @@ function Message(props) {
   );
 }
 
+// Takes in count and an array of usersOnline
+function UsersOnline(props) {
+  return (
+    <div className="Users-Online">
+      <h5> Users Online: {props.usersOnline.length}</h5>
+      <ul className="Users-List">
+        {props.usersOnline.map((user, i, users) => {
+          return (
+            <li className="User-Item" key={"user" + i}>
+              {user}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
 class ChatBox extends React.Component {
   constructor(props) {
     super(props);
@@ -18,19 +36,18 @@ class ChatBox extends React.Component {
       username: "Guest",
       boxName: props.chatName,
       typedMessage: "",
-      messageBoard: []
+      messageBoard: [],
+      usersOnline: ["me", "you", "jesus"]
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.socket = io("http://localhost:5000/");
     this.handleChatChange = this.handleChatChange.bind(this);
     this.socket.on("updateMessageBoard", serverMessageBoard => {
-      this.setState({ messageBoard: serverMessageBoard[this.state.boxName]});
+      this.setState({ messageBoard: serverMessageBoard[this.state.boxName] });
     });
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   componentWillUnmount() {
     this.socket.close();
@@ -52,20 +69,27 @@ class ChatBox extends React.Component {
     });
     return (
       <div className="ChatBox-Container">
-        <h1 className="Title"> {this.state.boxName} Chat </h1>
-        <div className="Message-Container" />
-        {messages}
-
+        <h3 className="ChatBox-Title"> {this.state.boxName} Chat </h3>
+        <UsersOnline usersOnline={this.state.usersOnline}> </UsersOnline>
+        <div className="Messages">{messages}</div>
         <form
           className="MessageInput"
           onSubmit={e => this.sendMessage(e)}
           value={this.typedMessage}
           onChange={this.handleChatChange}
         >
-          <h3>{this.state.username}</h3>
+          <span className="Input-Username">
+            {" "}
+            {this.state.username}{" "}
+            <button
+              className="Change-Username"
+              onClick={e => this.changeUsername(e)}
+            />
+          </span>
           <input
-            className="Message-Sent"
+            className="Input-Text"
             type="text"
+            placeholder="Type a message"
           />
         </form>
       </div>
@@ -90,8 +114,9 @@ class ChatBox extends React.Component {
       message: message,
       boxName: this.state.boxName
     });
-    this.setState({ typedMessage: ""});
+    //this.setState({ typedMessage: "" });
   }
+
 }
 
 export default ChatBox;

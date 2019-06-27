@@ -1,36 +1,69 @@
 .ChatBox-Container {
-    border: 1px solid black;
-    background: grey;
-    display: block;
+  border: 1px solid black;
+  background: lightgoldenrodyellow;
+  display: block;
+  width: 80%;
+  height: 200px;
+  max-height: 500px;
+  margin-left: 10%;
+  margin-bottom: 10px;
+
+  display: grid;
+  grid-template-columns: [users] 20% [username] 10% [message] auto;
+  grid-template-rows: [title] 10% [messages] auto [input] 10%;
+}
+
+.ChatBox-Title {
+  margin: 0;
+  padding: 0;
+  background: lightcoral;
+  grid-row: title / span 1;
+  grid-column: users / -1;
+}
+
+.Users-Online {
+    grid-row: messages / -1;
+    grid-column: users / span 1;
+}
+
+.MessageInput {
+  float: left;
+  width: 100%;
+  background: lightblue;
+  grid-row: input/ -1;
+  grid-column: username / -1;
+}
+
+.Messages {
+  border: 1px lightskyblue solid;
+  width: 100%;
+  grid-row: messages/ span 1;
+  grid-column: username / -1;
 }
 
 .Message {
-width: 100%;
-float: left;
+  width: 80%;
+  float: left;
+}
+.MessageText {
+  float: left;
+  background: white;
+  width: 30%;
 }
 
 .Sender {
-    float: left;
-    background: silver;
-    width: 10%;
+  float: left;
+  background: silver;
+  border: 1px solid black;
+  margin-right: 5px;
 }
 
-.MessageText {
-    float: left;
-    background: white;
-    width: 30%;
+.Input-Username {
+  float: left;
+  margin-left: 10px;
 }
 
-.MessageInput{
-    float: left;
-    width: 100%;
-    background: lightblue;
-}
-
-.MessageInput > h3 {
-    float: left;
-}
-.Message-Sent {
-    float: left;
-    height: 100%;
+.Input-Text {
+  float: right;
+  width: 70%;
 }

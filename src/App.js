@@ -1,7 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import ChatBox from './chatbox.js';
+import ChatBox from './Chatbox.js';
+import UserProfile from './UserProfile.js';
 
 function App() {
   return (
@@ -9,9 +10,10 @@ function App() {
       <header className="App-header">
         <h1> Chat Server </h1>
       </header>
-      <ChatBox className="ChatBox" chatName="TeamA" ></ChatBox>
-      <ChatBox className="ChatBox" chatName="TeamB"></ChatBox>
-      <ChatBox className="ChatBox" chatName="All"></ChatBox>
+      <UserProfile> </UserProfile>
+      <ChatBox username="Guest" chatName="TeamA" ></ChatBox>
+      <ChatBox username="Guest" chatName="TeamB"></ChatBox>
+      <ChatBox username="Guest" chatName="All"></ChatBox>
     </div>
   );
 }
