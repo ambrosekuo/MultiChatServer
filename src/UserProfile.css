@@ -1,0 +1,27 @@
+
+.Changing-Username-Input {
+  text-align: center;
+}
+
+.User-Label {
+  font-weight: normal;
+}
+
+.User-Profile > h3 {
+  text-align: center;
+}
+
+.Edit-Button-false {
+  float: right;
+  background: lightgrey;
+}
+
+.Edit-Button-true {
+  float: right;
+  background: lightyellow;
+}
+
+.Error-Message {
+    color: white;
+    font-weight: 700;
+}

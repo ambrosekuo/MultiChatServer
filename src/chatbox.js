@@ -3,24 +3,32 @@ import "./Chatbox.css";
 import io from "socket.io-client";
 
 function Message(props) {
+  console.log(props.user.backgroundColor);
   return (
     <div className="Message">
-      <div className="Sender"> {props.username} </div>
+      <div className="Time-Sent"> {props.timeSent}: </div>
+      <div
+        className="Sender"
+        style={{ background: props.user.userSettings.backgroundColor }}
+      >
+        {" "}
+        {props.user.username}{" "}
+      </div>
       <div className="MessageText"> {props.text} </div>
     </div>
   );
 }
 
-// Takes in count and an array of usersOnline
-function UsersOnline(props) {
+// Takes in count and an array of OnlineUsers
+function OnlineUsers(props) {
   return (
     <div className="Users-Online">
-      <h5> Users Online: {props.usersOnline.length}</h5>
+      <h5> Users Online: {props.onlineUsers.length}</h5>
       <ul className="Users-List">
-        {props.usersOnline.map((user, i, users) => {
+        {props.onlineUsers.map((user, i, users) => {
           return (
             <li className="User-Item" key={"user" + i}>
-              {user}
+              {user.username}
             </li>
           );
         })}
@@ -33,33 +41,35 @@ class ChatBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "Guest",
+      user: props.user,
       boxName: props.chatName,
       typedMessage: "",
       messageBoard: [],
-      usersOnline: ["me", "you", "jesus"]
+      onlineUsers: props.onlineUsers
     };
     this.sendMessage = this.sendMessage.bind(this);
-    this.socket = io("http://localhost:5000/");
     this.handleChatChange = this.handleChatChange.bind(this);
-    this.socket.on("updateMessageBoard", serverMessageBoard => {
-      this.setState({ messageBoard: serverMessageBoard[this.state.boxName] });
-    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ user: nextProps.user });
+    this.setState({ messageBoard: nextProps.messageBoard });
+    this.setState({ onlineUsers: nextProps.onlineUsers });
   }
 
   componentDidMount() {}
 
-  componentWillUnmount() {
-    this.socket.close();
-  }
+  componentWillUnmount() {}
 
   render() {
     console.log(this.state.messageBoard.length);
     let messages = this.state.messageBoard.map((message, i, a) => {
       console.log(message);
       return (
+        // Message user is not the same as the client user!
         <Message
-          username={message.username}
+          timeSent={message.timeSent}
+          user={message.user}
           text={message.text}
           key={this.state.boxName + i}
         >
@@ -70,21 +80,20 @@ class ChatBox extends React.Component {
     return (
       <div className="ChatBox-Container">
         <h3 className="ChatBox-Title"> {this.state.boxName} Chat </h3>
-        <UsersOnline usersOnline={this.state.usersOnline}> </UsersOnline>
+        <OnlineUsers onlineUsers={this.state.onlineUsers}> </OnlineUsers>
         <div className="Messages">{messages}</div>
         <form
           className="MessageInput"
           onSubmit={e => this.sendMessage(e)}
-          value={this.typedMessage}
+          value={this.state.typedMessage}
           onChange={this.handleChatChange}
+          style={{ background: this.state.user.userSettings.backgroundColor }}
         >
-          <span className="Input-Username">
+          <span
+            className="Input-Username"
+          >
             {" "}
-            {this.state.username}{" "}
-            <button
-              className="Change-Username"
-              onClick={e => this.changeUsername(e)}
-            />
+            {this.state.user.username}{" "}
           </span>
           <input
             className="Input-Text"
@@ -102,21 +111,25 @@ class ChatBox extends React.Component {
 
   sendMessage(e) {
     e.preventDefault();
-    const message = {
-      username: this.state.username,
-      text: this.state.typedMessage
-    };
-    this.setState(state => {
-      const newMessageBoard = [...state.messageBoard, message];
-      return { messageBoard: newMessageBoard };
-    });
-    this.socket.emit("sendMessage", {
-      message: message,
-      boxName: this.state.boxName
-    });
-    //this.setState({ typedMessage: "" });
-  }
 
+    const today = new Date();
+    let time =
+      (today.getHours() % 12) +
+      ":" +
+      (today.getMinutes() < 10
+        ? 0 + "" + today.getMinutes()
+        : today.getMinutes()) +
+      (today.getHours() < 12 ? "am" : "pm");
+
+    const message = {
+      user: this.state.user,
+      text: this.state.typedMessage,
+      timeSent: time,
+      boxName: this.state.boxName
+    };
+
+    this.props.sendMessage(e, message);
+  }
 }
 
 export default ChatBox;
