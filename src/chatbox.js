@@ -1,6 +1,5 @@
 import React from "react";
 import "./Chatbox.css";
-import io from "socket.io-client";
 
 function Message(props) {
   console.log(props.user.backgroundColor);
