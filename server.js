@@ -52,7 +52,9 @@ let newUser = {
   };
   */
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Handle React routing, return all requests to React app
 app.get("*", (req, res) => {
