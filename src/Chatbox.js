@@ -61,9 +61,7 @@ class ChatBox extends React.Component {
   componentWillUnmount() {}
 
   render() {
-    console.log(this.state.messageBoard.length);
     let messages = this.state.messageBoard.map((message, i, a) => {
-      console.log(message);
       return (
         // Message user is not the same as the client user!
         <Message

@@ -62,7 +62,7 @@ class UserProfile extends React.Component {
             {this.state.user.userSettings.permissions.map(
               (chatBox, i, chatBoxes) => {
                 return (
-                  <span>
+                  <span key={"Chatroom"+i}>
                     {" "}
                     {chatBox} {i < chatBoxes.length - 1 ? "," : ""}
                   </span>
