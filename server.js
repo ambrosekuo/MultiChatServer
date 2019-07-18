@@ -6,6 +6,7 @@ const path = require("path");
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io").listen(server);
+const cors = require('cors');
 
 const DEFAULT_ROOMS = ["TeamA", "TeamB", "All"];
 
@@ -52,7 +53,8 @@ let newUser = {
   };
   */
 
-app.use(bodyParser.json());
+app.use(cors());
+app.options('*', cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'build')));
 
