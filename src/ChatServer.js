@@ -34,7 +34,8 @@ class ChatServer extends React.Component {
     
 
     //this.sendMessage = this.sendMessage.bind(this);
-    this.socket = io("http://localhost:5000/");
+    //this.socket = io("http://localhost:5000/");
+    this.socket = io(window.location.host); // For production.
     //this.handleChatChange = this.handleChatChange.bind(this);
     //updatedData is {messageBoard, onlineUsers}
     this.socket.on("InitializeUser", newUser => {
