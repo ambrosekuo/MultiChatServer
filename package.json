@@ -27,6 +27,9 @@
     "start": "node server.js",
     "heroku-postbuild": "npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
+   "engines": {
+    "node": "10.3.0"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
