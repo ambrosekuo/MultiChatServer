@@ -13,12 +13,20 @@
 
 .Edit-Button-false {
   float: right;
-  background: lightgrey;
+  background: #f8f9f9;
+  border: 1px solid #97a1a7;
+  margin: 3px;
+}
+.Edit-Button-false:hover {
+  float: right;
+  background: #97a1a7;
+  border: none;
 }
 
 .Edit-Button-true {
   float: right;
-  background: lightyellow;
+  background: #acb4b9;
+  border: 2px solid #f8f9f9;
 }
 
 .Error-Message {

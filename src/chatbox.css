@@ -1,19 +1,13 @@
 .ChatBox-Container {
   border: 1px solid black;
-  background: lightgoldenrodyellow;
   width: 80%;
   height: 200px;
   max-height: 500px;
   margin-left: 10%;
   margin-bottom: 10px;
 
-  background: rgb(183, 173, 178);
-  background: linear-gradient(
-    90deg,
-    rgba(127, 198, 231, 0.295) 0%,
-    rgba(53, 137, 201, 0.24) 100%
-  );
-  border: 0.1px rgb(127, 198, 231) solid;
+  background: #ebedee;
+  border: 0.1px #97a1a7 solid;
   border-radius: 4px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 
@@ -25,13 +19,13 @@
 .ChatBox-Title {
   margin: 0;
   padding: 0;
-  background: lightcoral;
+  background: #ebedee;
   grid-row: title / span 1;
   grid-column: users / -1;
   border: black 1px solid;
   align-self: center;
 
-  border: 0.1px rgb(127, 198, 231) solid;
+  border: 0.1px #97a1a7 solid;
   border-radius: 4px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
@@ -56,7 +50,7 @@
 
 .Messages {
   margin-top: 2px;
-  border: 1px lightskyblue solid;
+  border: 1px #97a1a7 solid;
   width: 100%;
   grid-row: messages/ span 1;
   grid-column: username / -1;
@@ -79,15 +73,14 @@
 .Time-Sent {
     font-size: 15px;
     float: left;
-    border: 1px solid black;
-    background: rgba(5, 5, 5, 0.075);
+    border: 0.1px solid #ebedee;
+    background: #f8f9f9;
 }
 
 .Sender {
-
   float: left;
-  background: silver;
-  margin-right: 5px;
+  background: rgb(0, 0, 0);
+  margin: 0 5px 0 5px;
 
   background: linear-gradient(
     90deg,

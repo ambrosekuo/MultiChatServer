@@ -1,5 +1,5 @@
 import React from "react";
-import './UserProfile.css';
+import "./UserProfile.css";
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -16,8 +16,8 @@ class UserProfile extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({user: nextProps.user});
-    this.setState({errorMessage: nextProps.errorMessage}); 
+    this.setState({ user: nextProps.user });
+    this.setState({ errorMessage: nextProps.errorMessage });
   }
 
   render() {
@@ -38,13 +38,18 @@ class UserProfile extends React.Component {
         </form>
       );
     } else {
-      showUsername = <h3> <span className="User-Label"> User: </span> {this.state.user.username}</h3>;
+      showUsername = (
+        <h3>
+          {" "}
+          <span className="User-Label"> User: </span> {this.state.user.username}
+        </h3>
+      );
     }
     return (
       <div className="User-Profile">
         {showUsername}
         <button // toggle Edit-Button-false and true to change styling
-        className={"Edit-Button-"+this.state.editMode}
+          className={"Edit-Button-" + this.state.editMode}
           onClick={e => {
             this.toggleEditMode(e);
           }}
@@ -52,17 +57,30 @@ class UserProfile extends React.Component {
           EDIT
         </button>
         <ul>
+          <li>
+            Chatrooms you are in:{" "}
+            {this.state.user.userSettings.permissions.map(
+              (chatBox, i, chatBoxes) => {
+                return (
+                  <span>
+                    {" "}
+                    {chatBox} {i < chatBoxes.length - 1 ? "," : ""}
+                  </span>
+                );
+              }
+            )}{" "}
+          </li>
           <li>Messages Sent:</li>
           <li>More stuff?:</li>
         </ul>
-       <span className="Error-Message"> {this.state.errorMessage} </span>
+        <span className="Error-Message"> {this.state.errorMessage} </span>
       </div>
     );
   }
 
   toggleEditMode = e => {
-      this.setState({editMode: !this.state.editMode});
-  }
+    this.setState({ editMode: !this.state.editMode });
+  };
 
   handleUsernameChange = e => {
     this.setState({ typedUsername: e.target.value });
@@ -70,9 +88,9 @@ class UserProfile extends React.Component {
 
   changingUsername = e => {
     this.toggleEditMode(e);
-    this.props.changeUsername(e,this.state.typedUsername);
-    this.setState({typedUsername :""});
-  }
+    this.props.changeUsername(e, this.state.typedUsername);
+    this.setState({ typedUsername: "" });
+  };
 }
 
 export default UserProfile;

@@ -10,10 +10,11 @@ ul {
     margin: 10px;
     min-height: 200px;
 
-    background: rgba(236, 240, 241, 0.185);
-    border: 0.1px rgb(53, 20, 20) solid;
+    background: #f8f9f9;
+    border: 2px #7f8a93 solid;
     border-radius: 4px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    color: #374047;
 }
   
 .ChatBox-Container  {

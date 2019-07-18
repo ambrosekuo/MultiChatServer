@@ -11,12 +11,13 @@ class ChatServer extends React.Component {
     super(props);
     this.state = {
       user: {  
-        socketId: -1,
+        socketID: -1,
         id: -1,
         username: "NameCLIENTSIDED",
         password: "", 
         userSettings: {
-            backgroundColor: "black"
+            backgroundColor: "black",
+            permissions: []
         }
       },
       boxName: props.chatName,
@@ -59,6 +60,10 @@ class ChatServer extends React.Component {
   }
 
   render() {
+    let chatboxes = this.state.user.userSettings.permissions.map(boxName => {
+      return (
+      <ChatBox onlineUsers={this.state.onlineUsers} user={this.state.user} sendMessage = {this.sendMessage} chatName={boxName} messageBoard={this.state.messageBoard[boxName]} />);
+    });
     return (
       <div className="Chat-Server">
         <UserProfile
@@ -67,9 +72,7 @@ class ChatServer extends React.Component {
           errorMessage={this.state.errorMessage}
           onlineUsers={this.state.onlineUsers}
         />
-        <ChatBox onlineUsers={this.state.onlineUsers} user={this.state.user} sendMessage = {this.sendMessage} chatName="TeamA" messageBoard={this.state.messageBoard["TeamA"]} />
-        <ChatBox onlineUsers={this.state.onlineUsers} user={this.state.user} sendMessage = {this.sendMessage} chatName="TeamB" messageBoard={this.state.messageBoard["TeamB"]}/>
-        <ChatBox onlineUsers={this.state.onlineUsers} user={this.state.user} sendMessage = {this.sendMessage} chatName="All" messageBoard={this.state.messageBoard["All"]} />
+        {chatboxes};
       </div>
     );
   }

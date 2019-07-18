@@ -6,6 +6,7 @@
 
 .App-header {
   background-color: #282c34;
+  background: #374047;
   min-height: 20vh;
   display: flex;
   flex-direction: column;
@@ -20,6 +21,8 @@
   background: rgb(183,173,178);
   background: linear-gradient(90deg,rgb(127, 198, 231) 0%, rgba(53,136,201,1) 100%); 
   /* background-image: url("/public/assets/images/background_texture2.jpg"); */
+  background: #5f6e78;
   width: 100%;
   border: 1px black solid;
 }
+

@@ -7,22 +7,24 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io").listen(server);
 
-let connections = [];
+const DEFAULT_ROOMS = ["TeamA", "TeamB", "All"];
+
 let messageBoard = {
   TeamA: [
     {
       user: {
-        socketId: "",
+        socketID: "",
         id: -1,
         username: "GodUser", // Max-length = 10, default name is just Guest+id
         password: "", // Encrypt later, no password for now
         userSettings: {
           // Picks a random color from the color Array
-          backgroundColor: "gold"
+          backgroundColor: "gold",
+          permissions: []
         }
       },
       text: "hiii",
-      timeSent: "",
+      timeSent: "TIME DOES NOT BOUND ME",
       boxName: "BoxA"
     }
   ],
@@ -33,6 +35,23 @@ let messageBoard = {
 let userbase = [];
 let onlineUsers = [];
 
+// A user contains:
+/*
+let newUser = {
+    // id to make each users unique, will be a number/based off of user array index for now
+    socketID: socketID,
+    id: userbase.length,
+    username: "Guest" + userbase.length, // Max-length = 10, default name is just Guest+id
+    password: "", // Encrypt later, no password for now
+    userSettings: {
+      // Picks a random color from the color Array
+      backgroundColor:
+        profileColors[Math.floor(Math.random() * profileColors.length)],
+        permissions: DEFAULT_ROOMS,
+    }
+  };
+  */
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Handle React routing, return all requests to React app
@@ -41,13 +60,27 @@ app.get("*", (req, res) => {
 });
 
 io.on("connect", function(socket) {
-  connections.push(socket);
-  console.log("socket connected: " + connections.length);
+  console.log("socket connected: " + onlineUsers.length);
+  console.log(onlineUsers);
+
+  // Returns user if or null if none exists
+  function findUserBySocketID(socketID) {
+    return onlineUsers.filter(user => {
+      return user.socketID === socketID;
+    });
+  }
 
   // Everytime we update message board we pass in all onlineUsers and messageBoard
   // ***** Think we have to delay this a little and wait for client to mount first
   socket.once("readyToReceiveUpdates", () => {
-    socket.emit("InitializeUser", initializeUser());
+    let existingUser = findUserBySocketID(socket.id);
+    // Existing User
+    if (existingUser != null) {
+      socket.emit("InitializeUser", initializeUser(socket.id));
+    } else {
+      socket.emit("InitializeUser", existingUser);
+    }
+
     updateMessageBoard();
   });
 
@@ -63,7 +96,6 @@ io.on("connect", function(socket) {
   });
 
   socket.on("disconnecting", function(data) {
-    connections.filter(connectionSocket => connectionSocket != socket.id);
     console.log(
       "socket disconnecting: " +
         socket.id +
@@ -72,21 +104,22 @@ io.on("connect", function(socket) {
     );
     // Need to implement less heavy logic on time complexity, since this has to find the user by ID
     onlineUsers = onlineUsers.filter(user => {
-        console.log("filtered");
-        return (user.socketID != socket.id);
+      console.log(
+        "user.socketID: " + user.socketID + " socket.id: " + socket.id
+      );
+      return user.socketID !== socket.id;
     });
+
     updateMessageBoard();
   });
 
   function updateMessageBoard() {
     io.emit("updateMessageBoard", {
-        messageBoard: messageBoard,
-        onlineUsers: onlineUsers
-      });
-};
+      messageBoard: messageBoard,
+      onlineUsers: onlineUsers
+    });
+  }
 });
-
-
 
 server.listen(port, function() {
   console.log(`Listening on ${server.address().port}`);
@@ -105,17 +138,23 @@ const profileColors = [
 function initializeUser(socketID) {
   let newUser = {
     // id to make each users unique, will be a number/based off of user array index for now
-    socketId: socketID,
-    id: userbase.length,
-    username: "Guest" + userbase.length, // Max-length = 10, default name is just Guest+id
+    socketID: socketID,
+    id: onlineUsers.length, // Change this to onlineUsers for now, change back to userbase when databse is implemented
+    username: "Guest" + onlineUsers.length, // Max-length = 10, default name is just Guest+id
     password: "", // Encrypt later, no password for now
     userSettings: {
       // Picks a random color from the color Array
       backgroundColor:
-        profileColors[Math.floor(Math.random() * profileColors.length)]
+        profileColors[Math.floor(Math.random() * profileColors.length)],
+      permissions: DEFAULT_ROOMS
     }
   };
   userbase.push(newUser);
   onlineUsers.push(newUser);
   return newUser;
+}
+
+// Creates new Chat with name/users allowed
+function createNewChat() {
+  // Assuming userbase has all users
 }
