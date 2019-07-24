@@ -58,7 +58,7 @@ class UserProfile extends React.Component {
         </button>
         <ul>
           <li>
-            Chatrooms you are in:{" "}
+            <strong>Chatrooms you are in:{" "} </strong>
             {this.state.user.userSettings.permissions.map(
               (chatBox, i, chatBoxes) => {
                 return (
@@ -70,8 +70,6 @@ class UserProfile extends React.Component {
               }
             )}{" "}
           </li>
-          <li>Messages Sent:</li>
-          <li>More stuff?:</li>
         </ul>
         <span className="Error-Message"> {this.state.errorMessage} </span>
       </div>

@@ -7,7 +7,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1> Chat Server </h1>
+        <h1> TypeTalk</h1>
+        <h5>A free chat messaging site </h5> 
       </header>
       <ChatServer> </ChatServer>
     </div>

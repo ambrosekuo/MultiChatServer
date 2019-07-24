@@ -9,16 +9,17 @@ app.use(cors());
 const server = require("http").Server(app);
 const io = require("socket.io").listen(server);
 
-
+// Default rooms to join, can add rooms just by adding to this. 
 const DEFAULT_ROOMS = ["TeamA", "TeamB", "All"];
 
+// Initial Message Board
 let messageBoard = {
   TeamA: [
     {
       user: {
         socketID: "",
         id: -1,
-        username: "GodUser", // Max-length = 10, default name is just Guest+id
+        username: "Username", // Max-length = 10, default name is just Guest+id
         password: "", // Encrypt later, no password for now
         userSettings: {
           // Picks a random color from the color Array
@@ -26,8 +27,8 @@ let messageBoard = {
           permissions: []
         }
       },
-      text: "hiii",
-      timeSent: "TIME DOES NOT BOUND ME",
+      text: "Message",
+      timeSent: "Time",
       boxName: "BoxA"
     }
   ],
@@ -55,6 +56,7 @@ let newUser = {
   };
   */
 
+// Routing of the file. React file after build has static index file
 app.options('*', cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'build')));
@@ -64,6 +66,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
+// On socket connection, start anonymous function
 io.on("connect", function(socket) {
   console.log("socket connected: " + onlineUsers.length);
   console.log(onlineUsers);
@@ -89,17 +92,23 @@ io.on("connect", function(socket) {
     updateMessageBoard();
   });
 
+  //When the client sends a message, it adds to the server message board 
+  // and updates messageboard for all.
   socket.on("sendMessage", message => {
     messageBoard[message.boxName].push(message);
     updateMessageBoard();
   });
 
+ //When the client changes their settings like their name, the server
+ // their profile in the onlineUsers object
   socket.on("updateUserSettings", newProfile => {
-    // Currently use id to track index of array, definitely have to rethink implementation later
+    // Currently use id to track index of array, but if the project needs to be scaled, 
+    //  the implementation may have to be changed
     onlineUsers[newProfile.id] = newProfile;
     updateMessageBoard();
   });
 
+  // Handling client disconnection.
   socket.on("disconnecting", function(data) {
     console.log(
       "socket disconnecting: " +
